@@ -17,6 +17,22 @@ body {
   header img {
     width: 400px;
     height: 150px;
+  }@media (max-width: 768px) {
+    .container {
+      max-width: 90%;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .card {
+      margin-bottom: 10px;
+    }
+    .card-title {
+      margin-bottom: 10px;
+    }
+    header img {
+      width: 50px;
+      height: 75px;
+    }
   }
   .container {
     max-width: 1000px;
