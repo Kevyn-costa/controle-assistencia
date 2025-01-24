@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const fecharMesBtn = document.getElementById("fecharMes");
   const historicoMensal = document.getElementById("historicoMensal");
 
-  let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-  let historico = JSON.parse(localStorage.getItem("historico")) || [];
+  let clientes = JSON.parse(localStorage.getItem("trabalhos")) || [];
+  let historico = JSON.parse(localStorage.getItem("historic")) || [];
 
   atualizarTabela();
   atualizarResumo();
@@ -157,8 +157,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Salvar no localStorage
   function salvarLocalStorage() {
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-    localStorage.setItem("historico", JSON.stringify(historico));
+    localStorage.setItem("trabalhos", JSON.stringify(trabalhos));
+    localStorage.setItem("historic", JSON.stringify(historic));
   }
 
   // Formatar a data para o padrão brasileiro
