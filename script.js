@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const fecharMesBtn = document.getElementById("fecharMes");
   const historicoMensal = document.getElementById("historicoMensal");
 
-  let clientes = JSON.parse(localStorage.getItem("trabalhos")) || [];
-  let historico = JSON.parse(localStorage.getItem("historic")) || [];
+  let trabalhos = JSON.parse(localStorage.getItem("trabalhos")) || [];
+  let historic = JSON.parse(localStorage.getItem("historic")) || [];
 
   atualizarTabela();
   atualizarResumo();
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
       status: "Pendente",
     };
 
-    clientes.push(cliente);
+    trabalhos.push(cliente);
     salvarLocalStorage();
     atualizarTabela();
     atualizarResumo();
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fechar mês
   fecharMesBtn.addEventListener("click", () => {
-    if (clientes.length === 0) {
+    if (trabalhos.length === 0) {
       alert("Não há serviços cadastrados neste mês.");
       return;
     }
@@ -53,24 +53,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const mesAtual = obterMesAtual();
     const resumoMes = {
       mes: mesAtual,
-      clientes: [...clientes],
-      totalGanho: clientes.reduce((acc, c) => (c.status === "Pago" ? acc + c.valor : acc), 0),
+      clientes: [...trabalhos],
+      totalGanho: trabalhos.reduce((acc, c) => (c.status === "Pago" ? acc + c.valor : acc), 0),
     };
 
-    historico.push(resumoMes);
-    clientes = [];
+    historic.push(resumoMes);
+    trabalhos = [];
     salvarLocalStorage();
     atualizarTabela();
     atualizarResumo();
     atualizarHistorico();
-   alert(`Mês '${mesAtual}' fechado com sucesso!`);
+    alert(Mês '${mesAtual}' fechado com sucesso!);
   });
 
   // Atualiza a tabela com os clientes
   function atualizarTabela() {
     listaClientes.innerHTML = "";
 
-    clientes.forEach((cliente, index) => {
+    trabalhos.forEach((cliente, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${cliente.aparelho}</td>
@@ -89,20 +89,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Atualiza os resumos de serviços
   function atualizarResumo() {
-    const totalPagos = clientes.filter((c) => c.status === "Pago").length;
-    const totalPendentes = clientes.filter((c) => c.status === "Pendente").length;
-    const totalGanhos = clientes.reduce((acc, c) => (c.status === "Pago" ? acc + c.valor : acc), 0);
+    const totalPagos = trabalhos.filter((c) => c.status === "Pago").length;
+    const totalPendentes = trabalhos.filter((c) => c.status === "Pendente").length;
+    const totalGanhos = trabalhos.reduce((acc, c) => (c.status === "Pago" ? acc + c.valor : acc), 0);
 
     pagos.textContent = totalPagos;
     pendentes.textContent = totalPendentes;
- ganhosMes.textContent = `R$ ${totalGanhos.toFixed(2)}`;
+    ganhosMes.textContent = R$ ${totalGanhos.toFixed(2)};
   }
 
   // Atualiza o histórico mensal
   function atualizarHistorico() {
     historicoMensal.innerHTML = "";
 
-    historico.forEach((mes) => {
+    historic.forEach((mes) => {
       const div = document.createElement("div");
       div.classList.add("mb-4");
       div.innerHTML = `
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Alterar status do cliente
   window.alterarStatus = function (index) {
-    clientes[index].status = "Pago";
+    trabalhos[index].status = "Pago";
     salvarLocalStorage();
     atualizarTabela();
     atualizarResumo();
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Remover cliente
   window.removerCliente = function (index) {
-    clientes.splice(index, 1);
+    trabalhos.splice(index, 1);
     salvarLocalStorage();
     atualizarTabela();
     atualizarResumo();
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Formatar a data para o padrão brasileiro
   function formatarData(data) {
     const [ano, mes, dia] = data.split("-");
-   return `${dia}/${mes}/${ano}`;
+    return ${dia}/${mes}/${ano};
   }
 
   // Obter o mês atual
@@ -172,6 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const hoje = new Date();
     const mes = hoje.toLocaleString("pt-BR", { month: "long" });
     const ano = hoje.getFullYear();
-    return `${mes} ${ano}`;
+    return ${mes} ${ano};
   }
 });
