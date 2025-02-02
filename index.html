@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Controle de Assistência Técnica - JK</title>
+  <title>Painel de Assistência Técnica</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,32 +11,40 @@
   <div class="container py-5">
     <!-- Header -->
     <header>
-      <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4">
+      <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4"width="700" >>
     </header>
 
     <!-- Estatísticas -->
     <section class="row text-center mb-5">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="card shadow-sm border-0">
           <div class="card-body">
-            <h5 class="text-success">Serviços Pagos</h5>
-            <p id="pagos" class="display-6 fw-bold">0</p>
+            <h5 class="text-success">Serviços Concluídos</h5>
+            <p id="concluidos" class="display-6 fw-bold">0</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="card shadow-sm border-0">
           <div class="card-body">
-            <h5 class="text-warning">Pendentes</h5>
+            <h5 class="text-danger">Serviços Pendentes</h5>
             <p id="pendentes" class="display-6 fw-bold">0</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="card shadow-sm border-0">
           <div class="card-body">
-            <h5 class="text-primary">Ganhos no Mês</h5>
-            <p id="ganhosMes" class="display-6 fw-bold">R$ 0,00</p>
+            <h5 id="nomeMesAtual" class="text-warning">Receita [Mês Atual]</h5>
+            <p id="receitaMesAtual" class="display-6 fw-bold">R$ 0,00</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="text-info">Faturamento Anual</h5>
+            <p id="faturamentoAnual" class="display-6 fw-bold">R$ 0,00</p>
           </div>
         </div>
       </div>
@@ -47,11 +55,11 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h3 class="mb-4 text-center">Cadastrar Serviço</h3>
-          <form id="formCliente">
+          <form id="formServico">
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="aparelho" class="form-label">Aparelho</label>
-                <input type="text" id="aparelho" class="form-control" placeholder="Ex: A20s" required>
+                <label for="cliente" class="form-label">Cliente</label>
+                <input type="text" id="cliente" class="form-control" placeholder="Ex: João Silva" required>
               </div>
               <div class="col-md-6">
                 <label for="data" class="form-label">Data</label>
@@ -59,11 +67,18 @@
               </div>
               <div class="col-md-6">
                 <label for="servico" class="form-label">Serviço</label>
-                <input type="text" id="servico" class="form-control" placeholder="Ex: Troca de Tela" required>
+                <input type="text" id="servico" class="form-control" placeholder="Ex: Troca de tela" required>
               </div>
               <div class="col-md-6">
                 <label for="valor" class="form-label">Valor (R$)</label>
-                <input type="number" id="valor" class="form-control" placeholder="Ex: 220,00" required>
+                <input type="number" id="valor" class="form-control" placeholder="Ex: R$ 150,00" required>
+              </div>
+              <div class="col-md-6">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" class="form-control" required>
+                  <option value="Concluído">Concluído</option>
+                  <option value="Pendente">Pendente</option>
+                </select>
               </div>
             </div>
             <button type="submit" class="btn btn-primary w-100 mt-4">Cadastrar</button>
@@ -73,15 +88,15 @@
     </section>
 
     <!-- Tabela de Serviços -->
-    <section>
+    <section class="mb-5">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-4 text-center">Serviços do Mês</h3>
+          <h3 class="mb-4 text-center">Serviços Cadastrados</h3>
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Aparelho</th>
+                  <th>Cliente</th>
                   <th>Data</th>
                   <th>Serviço</th>
                   <th>Valor (R$)</th>
@@ -89,23 +104,31 @@
                   <th>Ações</th>
                 </tr>
               </thead>
-              <tbody id="listaClientes">
+              <tbody id="listaServicos">
                 <!-- Linhas dinâmicas -->
               </tbody>
             </table>
           </div>
-          <button id="fecharMes" class="btn btn-success w-100 mt-4">Fechar Mês</button>
         </div>
       </div>
     </section>
 
-    <!-- Histórico Mensal -->
-    <section class="mt-5">
+    <!-- Botão para fechar o mês -->
+    <section class="mb-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <button class="btn btn-success" onclick="fecharMes()">Fechar Mês</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de Meses Fechados -->
+    <section class="mb-5">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-4 text-center">Histórico Mensal</h3>
-          <div id="historicoMensal">
-            <!-- Histórico dinâmico -->
+          <h3 class="mb-4 text-center">Meses Fechados</h3>
+          <div id="listaMesesFechados" class="accordion">
+            <!-- Accordion de meses fechados será gerado aqui -->
           </div>
         </div>
       </div>
